@@ -1,0 +1,16 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django static files
+staticfiles/
+
+# PyCharm
+.idea/
+
+.DS_Store
+
+#Database file
+db.sqlite3
+
