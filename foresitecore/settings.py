@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = ')l14^!91h6w65t5t715j-+hf5-p&_rx=h-ia1o7$&cdapu4mk7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app',
+    # add coaster app
+    'coasterapp',
+    
 ]
 
 MIDDLEWARE = [
@@ -119,3 +122,40 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Get temporary directory path from environment.
+TEMP_DIR = os.environ.get("temp_directory_path")
+
+
+# The base path for cache backup directory.
+CACHE_BACKUP_DIR = os.path.join(os.path.abspath(os.getcwd()), 'cachebackup')
+
+
+# COASTER SETTINGS
+
+# The search url for coaster.
+COASTER_SEARCH_URL = 'https://www.coasterfurniture.com/?s={}'
+
+# The base path for the coaster where we store scraped data of products of coaster.
+COASTER_TEMP_DIR = os.path.join(TEMP_DIR, 'foresitecore', 'coaster')
+
+# Check if the temporary dir path for coaster is exists. If not then create it.
+if not os.path.exists(COASTER_TEMP_DIR):
+    os.makedirs(COASTER_TEMP_DIR)
+
+
+# UTTERMOST SETTINGS
+
+# The baseurl from where we scrape the products of uttermost.
+UTTERMOST_BASE_URL = 'https://www.uttermost.com'
+
+# The search page url of uttermost.
+UTTERMOST_SEARCH_URL = UTTERMOST_BASE_URL + '/search/?q={}'
+
+# The base path for the uttermost where we store scraped data of products of Uttermost.
+UTTERMOST_TEMP_DIR = os.path.join(TEMP_DIR, 'foresitecore', 'uttermost')
+
+# Check if the temporary dir path for uttermost is exists. If not then create it.
+if not os.path.exists(UTTERMOST_TEMP_DIR):
+    os.makedirs(UTTERMOST_TEMP_DIR)

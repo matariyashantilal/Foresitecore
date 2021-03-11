@@ -1,0 +1,96 @@
+<html>
+
+<head>
+    <title>Red Rock Furniture</title>
+</head>
+
+<body>
+    <h1>Hello and Welcome to the Red Rock Furniture!</h1>
+    <h2>Coaster</h2>
+
+    <h3>Scrape</h3>
+    <ul>
+        <li>
+            <a href="{% url 'scrape' vendor='coaster'  productID='801038' %}">Scrape the Product
+                801038</a>
+        </li>
+
+        <li>
+            <a href="{% url 'scrape' vendor='coaster'  productID='801038,350371KE' %}">scrape coaster products 801038
+                and
+                350371KE</a>
+        </li>
+
+        <li>
+            <a href="{% url 'scrape'  vendor='coaster'  productID='update-all' %}">Scrape all the
+                products</a>
+        </li>
+    </ul>
+
+    <h3>Inventory</h3>
+    <ul>
+        <li>
+            <a href="{% url 'get-supplier-inventory-counts' vendor='coaster' %}">Get Coaster
+                inventory counts</a>
+        </li>
+        <li>
+            <a href="{% url 'get-product-inventory-count' vendor='coaster' pNum='801038' %}">Get Coaster
+                inventory count
+                for pNum 801038</a>
+        </li>
+        <li>
+            <a href="{% url 'update-inventory' vendor='foa'  %}">localhost Update FOA Inventory</a>
+        </li>
+        <li>
+            <a href="{% url 'update-inventory' vendor='coaster'  %}">localhost Update Coaster Inventory</a>
+        </li>
+        <li>
+            <a href="https://redrockfurniture.azurewebsites.net/updateinventory/foa">Update prod FOA
+                Inventory</a>
+        </li>
+    </ul>
+
+    <h2>Price calls</h2>
+    <a href="{% url 'update-prices' vendor='coaster' %}">Update coaster prices</a>
+    <p>
+
+        <h3>Shopify</h3>
+        <ul>
+            <li>
+                <a href="{% url 'add-products' vendor='coaster' sku_list='801038' %}">Coaster add
+                    product 801038</a>
+            </li>
+            <li>
+                <a href="{% url 'add-products' vendor='coaster' sku_list='update-all' %}">Coaster
+                    Update All Products</a>
+            </li>
+            <li>
+                <a href="{% url 'add-products' vendor='coaster' sku_list='400410T' %}">local coaster add 400410T</a>
+            </li>
+            <li>
+                <a href="{% url 'add-products' vendor='coaster' sku_list='950172' %}">local coaster add 950172</a>
+            </li>
+            <li>
+                <a href="{% url 'add-products' vendor='rizzy' sku_list='jjjj' %}">local Rizzy add 801038</a>
+            </li>
+            <li>
+                <a href="{% url 'reset-shopify-products' %}">Reset Shopify products cache</a>
+            </li>
+
+        </ul>
+        <h3>Scarpe</h3>
+        <ul>
+            <li>
+                <a href="{% url 'cache-uttermost-images' %}">Scrape images of Uttermost</a>
+            </li>
+        </ul>
+
+        <h3>Inventory</h3>
+        <ul>
+            <li>
+                <a href="{% url 'update-inventory'  vendor='uttermost' %}">Update inventory counts to Shopify</a>
+            </li>
+        </ul>
+</body>
+
+</html>
