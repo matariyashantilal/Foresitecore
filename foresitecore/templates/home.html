@@ -38,12 +38,12 @@
                 inventory count
                 for pNum 801038</a>
         </li>
-         {% comment %} <li>
-            <a href="{% url 'updateinventory' vendor='foa'  %}">localhost Update FOA Inventory</a>
-        </li> {% endcomment %}
+        <li>
+            <a href="{% url 'update-inventory-foa'   %}">localhost Update FOA Inventory</a>
+        </li>
         <li>
             <a href="{% url 'update-inventory-coaster'   %}">localhost Update Coaster Inventory</a>
-        </li> 
+        </li>
         <li>
             <a href="https://redrockfurniture.azurewebsites.net/updateinventory/foa">Update prod FOA
                 Inventory</a>
@@ -51,11 +51,11 @@
     </ul>
 
 
-   <h2>Price calls</h2>
+    <h2>Price calls</h2>
     <a href="{% url 'update-prices'  %}">Update coaster prices</a>
-    <p> 
+    <p>
 
-         <h3>Shopify</h3>
+        <h3>Shopify</h3>
         <ul>
             <li>
                 <a href="{% url 'add-product'  sku_list='801038' %}">Coaster add
@@ -79,17 +79,17 @@
             </li>
         </ul>
         <h3>Scarpe</h3>
-       {% comment %} <ul>
+        <ul>
             <li>
-                <a href="{% url 'cacheUttermostImages' %}">Scrape images of Uttermost</a>
+                <a href="{% url 'cache-uttermost-images' %}">Scrape images of Uttermost</a>
             </li>
         </ul>
 
         <h3>Inventory</h3>
         <ul>
             <li>
-                <a href="{% url 'updateinventory'  vendor='uttermost' %}">Update inventory counts to Shopify</a>
+                <a href="{% url 'update-inventory-uttermost' %}">Update inventory counts to Shopify</a>
             </li>
-        </ul>  {% endcomment %}
+        </ul>
 
-</html> 
+</html>

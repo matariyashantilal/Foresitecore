@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'coaster',
     'shopify_module',
+    'supplier_uttermost',
+    'foa',
+    
 ]
 
 MIDDLEWARE = [
@@ -58,7 +61,7 @@ ROOT_URLCONF = 'foresitecore.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-         'DIRS': [str(os.path.join(PROJECT_DIR, 'templates'))],
+        'DIRS': [str(os.path.join(PROJECT_DIR, 'templates'))],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,6 +130,8 @@ STATIC_URL = '/static/'
 # COASTER DIRECTORY PATH
 COASTER_DIRECTORY_PATH = os.environ.get("COASTER_DIRECTORY_PATH")
 SHOPIFY_DIRECTORY_PATH = os.environ.get("SHOPIFY_DIRECTORY_PATH")
+SUPPLIER_UTTERMOST =  os.environ.get("SUPPLIER_UTTERMOST")
+
 
 # The search url for coaster.
 COASTER_SEARCH_URL = 'https://www.coasterfurniture.com/?s={}'
@@ -134,3 +139,20 @@ COASTER_SEARCH_URL = 'https://www.coasterfurniture.com/?s={}'
 
 if not os.path.exists(COASTER_DIRECTORY_PATH):
     os.makedirs(COASTER_DIRECTORY_PATH)
+
+CACHE_BACKUP_DIR = os.path.join(os.path.abspath(os.getcwd()), 'cachebackup')
+
+# UTTERMOST SETTINGS
+
+# The baseurl from where we scrape the products of uttermost.
+UTTERMOST_BASE_URL = 'https://www.uttermost.com'
+
+# The search page url of uttermost.
+UTTERMOST_SEARCH_URL = UTTERMOST_BASE_URL + '/search/?q={}'
+
+# The base path for the uttermost where we store scraped data of products of Uttermost.
+UTTERMOST_TEMP_DIR = os.path.join(SUPPLIER_UTTERMOST)
+
+# Check if the temporary dir path for uttermost is exists. If not then create it.
+if not os.path.exists(UTTERMOST_TEMP_DIR):
+    os.makedirs(UTTERMOST_TEMP_DIR)
