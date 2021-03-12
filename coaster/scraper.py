@@ -61,6 +61,7 @@ class Scraper:
                     raise Exception(
                         'Invalid response code from server: '.format(r.status_code))
                 uttr = html.fromstring(r.content)
+                
                 url = uttr.xpath('//a[@class="product-img-thumb"]/@href')
                 if len(url) > 0:
                     p = self.parse(url[0], pNum)
@@ -113,7 +114,7 @@ class Scraper:
 
             # Save the json to a file
             thejsonfilename = "coaster_scrape_" + pNum + ".json"
-            with open(os.path.join(settings.COASTER_TEMP_DIR, thejsonfilename), 'w+') as outfile2:
+            with open(os.path.join(settings.COASTER_DIRECTORY_PATH, thejsonfilename), 'w+') as outfile2:
                 json.dump(item, outfile2)
             return item
         else:

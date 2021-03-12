@@ -33,54 +33,53 @@
             <a href="{% url 'get-supplier-inventory-counts'  %}">Get Coaster
                 inventory counts</a>
         </li>
-        {% comment %} <li>
-            <a href="{% url 'getproductinventorycount' vendor='coaster' pNum='801038' %}">Get Coaster
+        <li>
+            <a href="{% url 'get-product-inventory-count'  pNum='801038' %}">Get Coaster
                 inventory count
                 for pNum 801038</a>
-        </li> {% endcomment %}
+        </li>
         {% comment %} <li>
             <a href="{% url 'updateinventory' vendor='foa'  %}">localhost Update FOA Inventory</a>
         </li>
         <li>
             <a href="{% url 'updateinventory' vendor='coaster'  %}">localhost Update Coaster Inventory</a>
-        </li>
+        </li> {% endcomment %}
         <li>
             <a href="https://redrockfurniture.azurewebsites.net/updateinventory/foa">Update prod FOA
                 Inventory</a>
-        </li> {% endcomment %}
+        </li>
     </ul>
 
-    {% comment %}
-    <h2>Price calls</h2>
+
+    {% comment %} <h2>Price calls</h2>
     <a href="{% url 'updateprices' vendor='coaster' %}">Update coaster prices</a>
-    <p>
+    <p> {% endcomment %}
 
         <h3>Shopify</h3>
         <ul>
             <li>
-                <a href="{% url 'addProducts' vendor='coaster' sku_list='801038' %}">Coaster add
+                <a href="{% url 'add-product'  sku_list='801038' %}">Coaster add
                     product 801038</a>
             </li>
             <li>
-                <a href="{% url 'addProducts' vendor='coaster' sku_list='update-all' %}">Coaster
+                <a href="{% url 'products-update-all'  %}">Coaster
                     Update All Products</a>
             </li>
             <li>
-                <a href="{% url 'addProducts' vendor='coaster' sku_list='400410T' %}">local coaster add 400410T</a>
+                <a href="{% url 'add-product'  sku_list='400410T' %}">local coaster add 400410T</a>
             </li>
             <li>
-                <a href="{% url 'addProducts' vendor='coaster' sku_list='950172' %}">local coaster add 950172</a>
+                <a href="{% url 'add-product'  sku_list='950172' %}">local coaster add 950172</a>
             </li>
             <li>
-                <a href="{% url 'addProducts' vendor='rizzy' sku_list='jjjj' %}">local Rizzy add 801038</a>
+                <a href="{% url 'add-product' sku_list='jjjj' %}">local Rizzy add 801038</a>
             </li>
-            <li>
+            {% comment %} <li>
                 <a href="{% url 'resetshopifyproducts' %}">Reset Shopify products cache</a>
-            </li>
-
+            </li> {% endcomment %}
         </ul>
         <h3>Scarpe</h3>
-        <ul>
+        {% comment %} <ul>
             <li>
                 <a href="{% url 'cacheUttermostImages' %}">Scrape images of Uttermost</a>
             </li>
@@ -91,7 +90,7 @@
             <li>
                 <a href="{% url 'updateinventory'  vendor='uttermost' %}">Update inventory counts to Shopify</a>
             </li>
-        </ul>
+        </ul> {% endcomment %}
 </body>
 
-</html> {% endcomment %}
+</html>

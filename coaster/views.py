@@ -11,14 +11,14 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-from coaster import api
-from coaster import scraper
+from coaster import api, inventory_count, product, scraper, shopify
 
 # Set up logging config
 logging.basicConfig(filename='coaster.log', level=logging.WARNING)
 
 # scraper class object
 scrapeObj = scraper.Scraper()
+productObj = product.products()
 
 
 def scrape_all_product(request):
@@ -75,3 +75,55 @@ def get_supplier_inventory_counts(request, refreshcache=False):
         print("Exception Inventory failed to save")
         print(e)
         return HttpResponse("Exception Inventory failed to save")
+
+
+def get_product_inventory_count(request, pNum):
+    inventoryCount = inventory_count.InventoryCount()
+    inventorycount = inventoryCount.getInventoryCount(pNum)
+
+    return HttpResponse(inventorycount)
+
+
+################# for addproduct ################
+
+def products_update_all(request):
+    return_me = ""
+    # get the category json
+    jObj = api.call("GetCategoryList", {})
+    for p in jObj:
+        # get all the objects in a category
+        #thefilter = saveFilter("getFilter?categoryCode="+p["CategoryCode"])
+        # saveCoasterProduct(thefilter,"CompleteCategory-"+p["CategoryName"])
+        args = {'CategoryCode': p["CategoryCode"]}
+        data = api.call("GetFilter", args)
+        filter = json.dumps(data).strip('"')
+        # Call the coaster API to get all the info for the products into a dictionary of objects
+        args = {'filterCode': filter}
+        products = api.call("GetProductList", args)
+        return_me += productObj.processProducts(products)
+    return HttpResponse(return_me)
+
+
+def addProducts(request, sku_list):
+    """Adds 1 or more comma delimited products from the vendor's product list and Shopify.
+    """
+    try:
+        result = ""
+        sku_list = sku_list.split(",")
+        result = productObj.addList(sku_list)
+        
+        # for uttermost
+        # elif (vendor == "uttermost"):
+        #     result = Uttermost.ManageUttermostProducts().updateShopifyForAllCatalogs()
+
+        # for foa
+        # elif (vendor == "foa"):
+        #     result = FOA.add(sku_list)
+        # else:
+        #     result = vendor + " not recognized."
+
+        if result == None:
+            result = "Update return string for this vendor!!"
+        return HttpResponse(result)
+    except Exception as e:
+        return HttpResponse("Failed to add Coaster products: " + str(e))
