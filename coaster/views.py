@@ -1,3 +1,4 @@
+from coaster import inventory_count
 import datetime
 import json
 import logging
@@ -11,14 +12,15 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
 
-from coaster import api, inventory_count, product, scraper, shopify
+from coaster import api, inventory_count, scraper
+from shopify_module.views import productObj
+from shopify_module import views as shopify
 
 # Set up logging config
 logging.basicConfig(filename='coaster.log', level=logging.WARNING)
 
 # scraper class object
 scrapeObj = scraper.Scraper()
-productObj = product.products()
 
 
 def scrape_all_product(request):
@@ -84,46 +86,74 @@ def get_product_inventory_count(request, pNum):
     return HttpResponse(inventorycount)
 
 
-################# for addproduct ################
+def update_inventory(request):
+    """Updates inventory for everything in the vendor's product list.
+    """
+    inventoryCount = inventory_count.InventoryCount()
+    sps = shopify.ShopifyProducts()
+    for p in sps.dProducts.values():
+        if p.attributes["vendor"] == "Coaster":
+            # get the suppliers inventory count for this product
+            sSupplierSKU = p.attributes["variants"][0].sku
+            inventorycount = inventoryCount.getInventoryCount(sSupplierSKU)
+            inventory_item_id = p.attributes["variants"][0].attributes["inventory_item_id"]
+            shopify_id = p.attributes["id"]
+            shopify.updateInventoryNew(
+                shopify_id, inventory_item_id, inventorycount)
 
-def products_update_all(request):
-    return_me = ""
-    # get the category json
-    jObj = api.call("GetCategoryList", {})
-    for p in jObj:
-        # get all the objects in a category
-        #thefilter = saveFilter("getFilter?categoryCode="+p["CategoryCode"])
-        # saveCoasterProduct(thefilter,"CompleteCategory-"+p["CategoryName"])
-        args = {'CategoryCode': p["CategoryCode"]}
-        data = api.call("GetFilter", args)
-        filter = json.dumps(data).strip('"')
-        # Call the coaster API to get all the info for the products into a dictionary of objects
-        args = {'filterCode': filter}
-        products = api.call("GetProductList", args)
-        return_me += productObj.processProducts(products)
-    return HttpResponse(return_me)
+    # TODO return reporting metrics. how many were updated. how many were skipped, etc
+    return HttpResponse("Updated Coaster inventory counts on the Shopify site")
+
+    # elif (vendor == "uttermost"):
+    #     email_subject = os.environ.get("emailsubject_inventorycountsuttermost")
+    #     EmailClass = gmail_lib.Gmail()
+    #     thedownloadedfilename = EmailClass.DownloadAttachement(email_subject)
+    #     if thedownloadedfilename:
+    #         SupplierClass = manage_uttermost_products.ManageUttermostProducts()
+    #         SupplierClass.updateInventoryCounts(thedownloadedfilename)
+    #         return HttpResponse("Updated inventory for Uttermost")
+    #     else:
+    #         return HttpResponse("Inventory counts for Uttermost is up to date.")
+    # elif (vendor == "foa"):
+    #     return HttpResponse(FOA.updateInventory())
+
+# TODO - add a flag to read from disk or refresh the cache, and use the flag
+# TODO check the timestamp on the file. if it is older than x then refresh the file.
 
 
-def addProducts(request, sku_list):
-    """Adds 1 or more comma delimited products from the vendor's product list and Shopify.
+
+
+
+def update_prices(request):
+    """Updates all the prices for a vendor.
     """
     try:
-        result = ""
-        sku_list = sku_list.split(",")
-        result = productObj.addList(sku_list)
-        
-        # for uttermost
-        # elif (vendor == "uttermost"):
-        #     result = Uttermost.ManageUttermostProducts().updateShopifyForAllCatalogs()
+        sps = shopify.ShopifyProducts()
+        for p in sps.dProducts.values():
+            if p.attributes["vendor"] == "Coaster":
+                # get the suppliers inventory count for this product
+                pNum = p.attributes["variants"][0].sku
+                price = productObj.getPrice(pNum)
+                shopify_id = p.attributes["id"]
+                shopify.updatePrice(shopify_id, price)
 
-        # for foa
-        # elif (vendor == "foa"):
-        #     result = FOA.add(sku_list)
-        # else:
-        #     result = vendor + " not recognized."
+        # TODO return reporting metrics. how many were updated. how many were skipped, etc
+        return HttpResponse("Updated RRFO prices for Coaster on the Shopify site")
 
-        if result == None:
-            result = "Update return string for this vendor!!"
-        return HttpResponse(result)
     except Exception as e:
-        return HttpResponse("Failed to add Coaster products: " + str(e))
+        logging.info("Cannot update price for "+sSupplierSKU +
+                     ". Problem with product id find. Did the id change, or was the product on the website removed?")
+        logging.info(e)
+        return
+
+    # elif (vendor == "uttermost"):
+    #     return HttpResponse("[TODO: Update prices (Uttermost)]")
+    # elif (vendor == "foa"):
+    #     return HttpResponse("[TODO: Update prices (FOA)]")
+    # else:
+    #     return HttpResponse(vendor + " not recognized.")
+
+
+priceData = "empty"
+#
+# TODO This should go in a class init

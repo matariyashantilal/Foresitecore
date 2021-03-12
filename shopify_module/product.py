@@ -1,19 +1,20 @@
-from django.http import HttpResponse
 import json
 import logging
 import os
 
+from coaster import api, inventory_count, scraper
 from django.conf import settings
+from django.http import HttpResponse
 
-from coaster import api, inventory_count, scraper, shopify
+from shopify_module import views as shopify
 
 scrapeObj = scraper.Scraper()
 
 
 class products:
 
-    def processProducts(self, products): 
-        return_text = "" 
+    def processProducts(self, products):
+        return_text = ""
         stats_totalprods = len(products)
         stats_noupdates = 0
         stats_skips = 0
@@ -54,7 +55,7 @@ class products:
             product["MAP"] = str(price_data[pNum]["MAP"])
             product["RRFO_PRICE"] = str(self.getPrice(pNum))
             product["Images"] = []
-            
+
             #inventorycount = inventoryCount.getInventoryCount(product["ProductNumber"])
             if inventorycount == 0 and product["IsDiscontinued"]:
                 # discontinued.updateDiscontinuedMap(product["ProductNumber"])
@@ -69,7 +70,7 @@ class products:
                 return_text += "Skiped box Coaster product " + \
                     str(pNum) + "  <br>"
             else:
-            
+
                 # Dimensions - This should be switched to use the public dimension data instead of the API info
                 #product["Description"] += "<br><br>Dimensions (Length x Width x Height):"
                 # for option in product["MeasurementList"]:
@@ -77,8 +78,7 @@ class products:
                 #product["Tags"] = "2000"
 
                 scrapedata = scrapeObj.scrape(product['ProductNumber'])
-                
-                
+
                 if len(scrapedata) != 0:
 
                     # If there are public images available for the product, grab their URLs
@@ -113,9 +113,8 @@ class products:
                     product["Name"] = scrapedata["Title"]
 
                     # Add the product to Shopify
-                    
+
                     returnme = shopify.upsertShopifyProduct(product)
-                    
 
                 # Add the Coaster SKU and Shopify product id to products.txt
                 # with open(product_file, 'a') as file:
@@ -126,7 +125,6 @@ class products:
                     returnme = ""
                     return_text += "Skipped Coaster product. Found no scrape data " + \
                         str(pNum) + " " + returnme + "<br>"
-            
 
         #stats_totalprods = products.len
         #stats_noupdates = 0

@@ -15,6 +15,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+PROJECT_DIR = Path(__file__).resolve().parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -38,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'coaster'
+    'coaster',
+    'shopify_module',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +58,7 @@ ROOT_URLCONF = 'foresitecore.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'app/templates')],
+         'DIRS': [str(os.path.join(PROJECT_DIR, 'templates'))],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -124,7 +126,7 @@ STATIC_URL = '/static/'
 # COASTER SETTINGS
 # COASTER DIRECTORY PATH
 COASTER_DIRECTORY_PATH = os.environ.get("COASTER_DIRECTORY_PATH")
-
+SHOPIFY_DIRECTORY_PATH = os.environ.get("SHOPIFY_DIRECTORY_PATH")
 
 # The search url for coaster.
 COASTER_SEARCH_URL = 'https://www.coasterfurniture.com/?s={}'

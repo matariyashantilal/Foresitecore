@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='home.html')),
     path('coaster/', include('coaster.urls')),
+    path('shopify/', include('shopify_module.urls')),
 ]
