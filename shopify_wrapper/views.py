@@ -4,8 +4,6 @@ import logging
 import os
 import shutil
 import time
-from base64 import b64encode
-from json.decoder import JSONDecodeError
 from pathlib import Path
 
 import requests
@@ -22,14 +20,13 @@ productObj = product.products()
 
 locationid = os.environ.get("SHOPIFY_LOCATION")
 
-thedir = os.environ.get("COASTER_DIRECTORY_PATH")
 
-thedir = os.environ.get("SHOPIFY_DIRECTORY_PATH")
+thebaseshopifylogpath = os.environ.get("SHOPIFY_DIRECTORY_PATH")
 
-thebaseshopifylogpath = os.path.join(thedir)
 thejsonfilename = "allshopifyproducts." + \
-    os.environ.get("SHOPIFY_SHOP") + ".json"
-Path(thebaseshopifylogpath).mkdir(parents=True, exist_ok=True)
+    str(os.environ.get("SHOPIFY_SHOP")) + ".json"
+
+Path(str(thebaseshopifylogpath)).mkdir(parents=True, exist_ok=True)
 
 # TODO introduct the ability to reset a product
 
@@ -937,7 +934,7 @@ def products_update_all(request):
     return HttpResponse(return_me)
 
 
-def addProducts(request, sku_list):
+def add_product(request, sku_list):
     """Adds 1 or more comma delimited products from the vendor's product list and Shopify.
     """
     try:
@@ -945,15 +942,8 @@ def addProducts(request, sku_list):
         sku_list = sku_list.split(",")
         result = productObj.addList(sku_list)
 
-        # for uttermost
-        # elif (vendor == "uttermost"):
-        #     result = Uttermost.ManageUttermostProducts().updateShopifyForAllCatalogs()
-
-        # for foa
         # elif (vendor == "foa"):
         #     result = FOA.add(sku_list)
-        # else:
-        #     result = vendor + " not recognized."
 
         if result == None:
             result = "Update return string for this vendor!!"

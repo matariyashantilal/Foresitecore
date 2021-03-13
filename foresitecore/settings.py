@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'coaster',
-    'shopify_module',
+    'shopify_wrapper',
     'supplier_uttermost',
     'foa',
     

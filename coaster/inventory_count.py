@@ -32,6 +32,7 @@ class InventoryCount:
         # The current code combines the inventory count from both warehouses
         for i in jInventory[0]["InventoryList"]:
             self.dTheMap[i['ProductNumber']] = int(i['QtyAvail'])
+
         # TODO fix this to handle a dynamic number of locations
         for i in jInventory[1]["InventoryList"]:
             self.dTheMap[i['ProductNumber']] += int(i['QtyAvail'])

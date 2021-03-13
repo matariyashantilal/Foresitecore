@@ -1,20 +1,13 @@
-from coaster import inventory_count
-import datetime
 import json
 import logging
 import os
-import tempfile
-from pathlib import Path
-from time import sleep
 
 from django.conf import settings
 from django.http import HttpResponse
-from django.shortcuts import render
-from django.views import View
+from shopify_wrapper import views as shopify
+from shopify_wrapper.views import productObj
 
 from coaster import api, inventory_count, scraper
-from shopify_module.views import productObj
-from shopify_module import views as shopify
 
 # Set up logging config
 logging.basicConfig(filename='coaster.log', level=logging.WARNING)
@@ -24,10 +17,9 @@ scrapeObj = scraper.Scraper()
 
 
 def scrape_all_product(request):
-    """Scrape all the product.
+    """Scrape all the product on coaster.
     """
     return_me = ""
-    # get the category json
     jObj = api.call("GetCategoryList", {})
     scrapeObj.resetcounts()
     for p in jObj:
@@ -59,6 +51,8 @@ def scrape(request, productID):
 
 
 def get_supplier_inventory_counts(request, refreshcache=False):
+    """Coaster inventory counts for warehouse
+    """
     returnme = ""
     try:
         thefilename = "inventory_coaster.json"
@@ -74,15 +68,12 @@ def get_supplier_inventory_counts(request, refreshcache=False):
                 warehouse["WarehouseCode"] + "<p>"
         return HttpResponse(returnme)
     except Exception as e:
-        print("Exception Inventory failed to save")
-        print(e)
         return HttpResponse("Exception Inventory failed to save")
 
 
 def get_product_inventory_count(request, pNum):
     inventoryCount = inventory_count.InventoryCount()
     inventorycount = inventoryCount.getInventoryCount(pNum)
-
     return HttpResponse(inventorycount)
 
 
@@ -104,24 +95,9 @@ def update_inventory(request):
     # TODO return reporting metrics. how many were updated. how many were skipped, etc
     return HttpResponse("Updated Coaster inventory counts on the Shopify site")
 
-    # elif (vendor == "uttermost"):
-    #     email_subject = os.environ.get("emailsubject_inventorycountsuttermost")
-    #     EmailClass = gmail_lib.Gmail()
-    #     thedownloadedfilename = EmailClass.DownloadAttachement(email_subject)
-    #     if thedownloadedfilename:
-    #         SupplierClass = manage_uttermost_products.ManageUttermostProducts()
-    #         SupplierClass.updateInventoryCounts(thedownloadedfilename)
-    #         return HttpResponse("Updated inventory for Uttermost")
-    #     else:
-    #         return HttpResponse("Inventory counts for Uttermost is up to date.")
-    # elif (vendor == "foa"):
-    #     return HttpResponse(FOA.updateInventory())
 
 # TODO - add a flag to read from disk or refresh the cache, and use the flag
 # TODO check the timestamp on the file. if it is older than x then refresh the file.
-
-
-
 
 
 def update_prices(request):
@@ -141,7 +117,8 @@ def update_prices(request):
         return HttpResponse("Updated RRFO prices for Coaster on the Shopify site")
 
     except Exception as e:
-        logging.info("Cannot update price for "+sSupplierSKU +
+        #remove unneccesary variable
+        logging.info("Cannot update price for "
                      ". Problem with product id find. Did the id change, or was the product on the website removed?")
         logging.info(e)
         return

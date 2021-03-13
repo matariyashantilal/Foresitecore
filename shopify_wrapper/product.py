@@ -6,7 +6,7 @@ from coaster import api, inventory_count, scraper
 from django.conf import settings
 from django.http import HttpResponse
 
-from shopify_module import views as shopify
+from shopify_wrapper import views as shopify
 
 scrapeObj = scraper.Scraper()
 

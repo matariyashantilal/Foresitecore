@@ -2,7 +2,7 @@ import os
 
 from django.http import HttpResponse
 from django.shortcuts import render
-from shopify_module import views as shopify
+from shopify_wrapper import views as shopify
 from zeep import Client
 
 # Routes that need to be supported:
@@ -19,8 +19,6 @@ user = os.environ.get("FOA_USER")
 key = os.environ.get("FOA_API_KEY")
 client = Client("https://www.foagroup.com/api/v2_soap/?wsdl")
 product_file = "./foa/products.txt"
-
-
 
 
 # API Documentation (with examples in PHP): https://www.foagroup.com/help.php
@@ -148,3 +146,17 @@ class FoaProduct:
     #result = client.service.catalogProductAttributeMediaList(session, product="159", storeView="", identifierType="")
     #x = result[0]["url"]
     # updateInventory()
+
+
+def add_product(request, sku_list):
+    """Adds 1 or more comma delimited products from the vendor's product list and Shopify.
+    """
+    try:
+        result = ""
+        sku_list = sku_list.split(",")
+        result = FoaProduct().add(sku_list)
+        if result == None:
+            result = "Update return string for this vendor!!"
+        return HttpResponse(result)
+    except Exception as e:
+        return HttpResponse("Failed to add Coaster products: " + str(e))

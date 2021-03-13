@@ -1,9 +1,9 @@
-from supplier_uttermost.lib_foresite import ImportEmailFromGmail, gmail_lib
 import os
 
 from django.http import HttpResponse
 
-from supplier_uttermost import get_uttermost_image_urls, manage_uttermost_products
+from supplier_uttermost import (import_email_from_gmail, get_uttermost_image_urls,
+                                gmail_lib, manage_uttermost_products)
 
 getuttermostimageurlsObj = get_uttermost_image_urls.GetUttermostImageUrls()
 manageuttermostproductsObj = manage_uttermost_products.ManageUttermostProducts()
@@ -20,8 +20,22 @@ def update_inventory(request):
     EmailClass = gmail_lib.Gmail()
     thedownloadedfilename = EmailClass.DownloadAttachement(email_subject)
     if thedownloadedfilename:
-        SupplierClass = manageuttermostproductsObj.ManageUttermostProducts()
+        SupplierClass = manageuttermostproductsObj
         SupplierClass.updateInventoryCounts(thedownloadedfilename)
         return HttpResponse("Updated inventory for Uttermost")
     else:
         return HttpResponse("Inventory counts for Uttermost is up to date.")
+
+
+def add_product(request, sku_list):
+    """Adds 1 or more comma delimited products from the vendor's product list and Shopify.
+    """
+    try:
+        result = ""
+        sku_list = sku_list.split(",")
+        result = manage_uttermost_products.ManageUttermostProducts().updateShopifyForAllCatalogs()
+        if result == None:
+            result = "Update return string for this vendor!!"
+        return HttpResponse(result)
+    except Exception as e:
+        return HttpResponse("Failed to add Coaster products: " + str(e))

@@ -58,7 +58,7 @@
         <h3>Shopify</h3>
         <ul>
             <li>
-                <a href="{% url 'add-product'  sku_list='801038' %}">Coaster add
+                <a href="{% url 'add-product-coaster'  sku_list='801038' %}">Coaster add
                     product 801038</a>
             </li>
             <li>
@@ -66,26 +66,32 @@
                     Update All Products</a>
             </li>
             <li>
-                <a href="{% url 'add-product'  sku_list='400410T' %}">local coaster add 400410T</a>
+                <a href="{% url 'add-product-coaster'  sku_list='400410T' %}">local coaster add 400410T</a>
             </li>
             <li>
-                <a href="{% url 'add-product'  sku_list='950172' %}">local coaster add 950172</a>
+                <a href="{% url 'add-product-coaster'  sku_list='950172' %}">local coaster add 950172</a>
             </li>
             <li>
-                <a href="{% url 'add-product' sku_list='jjjj' %}">local Rizzy add 801038</a>
+                <a href="{% url 'add-product-coaster' sku_list='jjjj' %}">local Rizzy add 801038</a>
             </li>
+            <li>
+                <a href="{% url 'add-product-foa' sku_list="CM7295Q-BED"  %}">local foa add 801038</a>
+            </li>
+            {% comment %} <li>
+                <a href="{% url 'add-product-uttermost' sku_list="CM7295Q-BED"    %}">local uttermost add 801038</a>
+            </li> {% endcomment %}
             <li>
                 <a href="{% url 'resetshopifyproducts' %}">Reset Shopify products cache</a>
             </li>
         </ul>
-        <h3>Scarpe</h3>
+        <h3>Scarpe Uttermost</h3>
         <ul>
             <li>
                 <a href="{% url 'cache-uttermost-images' %}">Scrape images of Uttermost</a>
             </li>
         </ul>
 
-        <h3>Inventory</h3>
+        <h3>Inventory Uttermost</h3>
         <ul>
             <li>
                 <a href="{% url 'update-inventory-uttermost' %}">Update inventory counts to Shopify</a>
