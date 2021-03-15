@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'coaster',
     'shopify_wrapper',
-    'supplier_uttermost',
+    'uttermost',
     'foa',
     
 ]
@@ -123,7 +123,7 @@ STATIC_URL = '/static/'
 # COASTER DIRECTORY PATH
 COASTER_DIRECTORY_PATH = os.environ.get("COASTER_DIRECTORY_PATH")
 SHOPIFY_DIRECTORY_PATH = os.environ.get("SHOPIFY_DIRECTORY_PATH")
-SUPPLIER_UTTERMOST =  os.environ.get("SUPPLIER_UTTERMOST")
+uttermost =  os.environ.get("uttermost")
 
 
 # The search url for coaster.
@@ -144,7 +144,7 @@ UTTERMOST_BASE_URL = 'https://www.uttermost.com'
 UTTERMOST_SEARCH_URL = UTTERMOST_BASE_URL + '/search/?q={}'
 
 # The base path for the uttermost where we store scraped data of products of Uttermost.
-UTTERMOST_TEMP_DIR = os.path.join(SUPPLIER_UTTERMOST)
+UTTERMOST_TEMP_DIR = os.path.join(uttermost)
 
 # Check if the temporary dir path for uttermost is exists. If not then create it.
 if not os.path.exists(UTTERMOST_TEMP_DIR):

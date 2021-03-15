@@ -30,6 +30,7 @@ class GetUttermostImageUrls:
             attr = html.fromstring(r.content)
             links = attr.xpath('//a[@class="thumbnail__nameLink"]/@href')
             yield links
+            
             pageCount = attr.xpath(
                 'normalize-space(string(//div[@class="gridControls__itemCount"]))')
 
@@ -66,29 +67,34 @@ class GetUttermostImageUrls:
 
     def cache_uttermost_images_links(self):
         thejsonfilename = 'uttermost_images_scraped_data.json'
+        
         thefulljsonpath = os.path.join(
             settings.UTTERMOST_TEMP_DIR, thejsonfilename)
+        
         cached_json_file = os.path.join(
             settings.CACHE_BACKUP_DIR, thejsonfilename)
+        
+               
         if os.path.exists(cached_json_file):
             # Copy the cached json file in the temporary directory.
             shutil.copy(cached_json_file, settings.UTTERMOST_TEMP_DIR)
             return('Already cached in Cache Backup.')
         else:
-            with open(thefulljsonpath, 'w+') as f:
+            with open(thefulljsonpath, 'w') as f:
                 data = {'products': [], 'urls': []}
+           
+        
                 for cat_link in cat_links:
                     for links in self.get_links(cat_link):
                         for link in links:
                             if link not in data['urls']:
                                 dictx = self.scrape_uttermost_product_images(
                                     link)
+                             
                                 if dictx:
                                     data["products"].append(dictx)
                                     data["urls"].append(link)
-                                    json.dump(
-                                        data, f, sort_keys=True, indent=4)
-                            pprint(dictx)
+                json.dump(data, f, sort_keys=True, indent=4)
 
             shutil.copy(thefulljsonpath, settings.CACHE_BACKUP_DIR)
             return('Scraped images links of uttermost and stored in a JSON file.')

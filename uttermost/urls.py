@@ -1,6 +1,6 @@
 from django.urls import path
 
-from supplier_uttermost import views
+from uttermost import views
 
 urlpatterns = [
     path('addproducts/<sku_list>',

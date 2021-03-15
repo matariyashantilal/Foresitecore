@@ -2,7 +2,7 @@ import os
 
 from django.http import HttpResponse
 
-from supplier_uttermost import (import_email_from_gmail, get_uttermost_image_urls,
+from uttermost import (import_email_from_gmail, get_uttermost_image_urls,
                                 gmail_lib, manage_uttermost_products)
 
 getuttermostimageurlsObj = get_uttermost_image_urls.GetUttermostImageUrls()
