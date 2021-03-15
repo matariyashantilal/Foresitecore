@@ -31,43 +31,47 @@ class FoaProduct:
     def add(self, sku_list):
         return_text = ""
         for sku in sku_list:
-            try:
-                # Make sure the SKU doesn't already exist in products.txt
-                with open(product_file, 'r+') as file:
-                    for line in file:
-                        if line[0:len(sku)+1] == sku + "\t":
-                            #raise Exception("Duplicate product")
-                            donothing = ""
+            # try:
+            # Make sure the SKU doesn't already exist in products.txt
+            with open(product_file, 'r+') as file:
+                for line in file:
+                    if line[0:len(sku)+1] == sku + "\t":
+                        #raise Exception("Duplicate product")
+                        donothing = ""
 
-                session = client.service.login(username=user, apiKey=key)
-                # $attributes = (object)array('additional_attributes' => array('priority', 'eta'));
-                # $result = $proxy->catalogProductInfo($sessionId,'SM6072-LV', null, $attributes);
-                result = client.service.catalogProductInfo(session, sku, storeView="", attributes={
-                    'priority', 'eta'}, identifierType="sku")
-                images = client.service.catalogProductAttributeMediaList(
-                    session, sku, storeView="", identifierType="sku")
-                # Add the product to Shopify
-                product = {"ProductNumber": result["sku"],
-                           "Name": result["meta_title"][23:],
-                           "Vendor": "Furniture of America",
-                           "Description": result["short_description"],
-                           "MAP": result["price"],
-                           "Tags": "",
-                           "Images": []}
-                for image in images:
-                    product["Images"].append(image["url"])
-                id = shopify.addProduct(product)
-                if id == -1:
-                    raise Exception("Shopify error")
+            session = client.service.login(username=user, apiKey=key)
 
-                # Append the SKU and the shopify product ID to products.txt
-                with open(product_file, 'a') as file:
-                    file.write(sku + '\t' + str(id) + '\n')
+            # $attributes = (object)array('additional_attributes' => array('priority', 'eta'));
+            # $result = $proxy->catalogProductInfo($sessionId,'SM6072-LV', null, $attributes);
+            result = client.service.catalogProductInfo(session, sku, storeView="", attributes={
+                'priority', 'eta'}, identifierType="sku")
 
-                return_text += "Added FOA product " + sku + "<br>"
-            except Exception as e:
-                return_text += "Failed to add FOA product " + \
-                    sku + ": " + str(e) + "<br>"
+            print("result", result)
+
+            images = client.service.catalogProductAttributeMediaList(
+                session, sku, storeView="", identifierType="sku")
+            # Add the product to Shopify
+            product = {"ProductNumber": result["sku"],
+                       "Name": result["meta_title"][23:],
+                       "Vendor": "Furniture of America",
+                       "Description": result["short_description"],
+                       "MAP": result["price"],
+                       "Tags": "",
+                       "Images": []}
+            for image in images:
+                product["Images"].append(image["url"])
+            id = shopify.addProduct(product)
+            if id == -1:
+                raise Exception("Shopify error")
+
+            # Append the SKU and the shopify product ID to products.txt
+            with open(product_file, 'a') as file:
+                file.write(sku + '\t' + str(id) + '\n')
+
+            return_text += "Added FOA product " + sku + "<br>"
+            # except Exception as e:
+            #     return_text += "Failed to add FOA product " + \
+            #         sku + ": " + str(e) + "<br>"
 
     # Remove this SKU from products.txt, then use the corresponding Shopify product id to remove it from Shopify
 

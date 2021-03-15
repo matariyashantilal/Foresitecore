@@ -91,13 +91,7 @@ def update_inventory(request):
             shopify_id = p.attributes["id"]
             shopify.updateInventoryNew(
                 shopify_id, inventory_item_id, inventorycount)
-
-    # TODO return reporting metrics. how many were updated. how many were skipped, etc
     return HttpResponse("Updated Coaster inventory counts on the Shopify site")
-
-
-# TODO - add a flag to read from disk or refresh the cache, and use the flag
-# TODO check the timestamp on the file. if it is older than x then refresh the file.
 
 
 def update_prices(request):
@@ -113,24 +107,12 @@ def update_prices(request):
                 shopify_id = p.attributes["id"]
                 shopify.updatePrice(shopify_id, price)
 
-        # TODO return reporting metrics. how many were updated. how many were skipped, etc
         return HttpResponse("Updated RRFO prices for Coaster on the Shopify site")
 
     except Exception as e:
-        #remove unneccesary variable
+        # remove unneccesary variable
         logging.info("Cannot update price for "
                      ". Problem with product id find. Did the id change, or was the product on the website removed?")
         logging.info(e)
-        return
-
-    # elif (vendor == "uttermost"):
-    #     return HttpResponse("[TODO: Update prices (Uttermost)]")
-    # elif (vendor == "foa"):
-    #     return HttpResponse("[TODO: Update prices (FOA)]")
-    # else:
-    #     return HttpResponse(vendor + " not recognized.")
-
-
-priceData = "empty"
-#
-# TODO This should go in a class init
+        return HttpResponse("Cannot update price for "
+                            ". Problem with product id find. Did the id change, or was the product on the website removed?")

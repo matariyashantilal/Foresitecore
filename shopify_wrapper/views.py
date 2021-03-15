@@ -1,3 +1,4 @@
+import jsonpickle
 import glob
 import json
 import logging
@@ -12,6 +13,7 @@ from coaster import api
 from django.http import HttpResponse
 
 from . import product
+
 productObj = product.products()
 
 # logging.basicConfig(filename='foresitefurniture.log',level=logging.DEBUG)
@@ -35,14 +37,14 @@ currentDir = os.getcwd()
 shopify.ShopifyResource.set_site(os.environ.get("SHOPIFY_SECUREURL"))
 
 
-#shop = shopify.Shop.current()
+# shop = shopify.Shop.current()
 # get all inventory counts for the location
 # https://shopify.dev/docs/admin-api/rest/reference/inventory/location
 def loadShopifyInventoryLevels(locationid):
     inv_levels = []
     oLocation = shopify.Location({'id': locationid})
-    #allShopifyProducts = get_products(inv_levels,limit=250)
-    #inventorycounts = oLocation.inventory_levels()
+    # allShopifyProducts = get_products(inv_levels,limit=250)
+    # inventorycounts = oLocation.inventory_levels()
     inventorycounts = recursive_get_inventory_levels(
         oLocation, inv_levels, limit=250)
     return inventorycounts
@@ -51,7 +53,7 @@ def loadShopifyInventoryLevels(locationid):
 def recursive_get_inventory_levels(oLocation, inv_levels, page_info='', chunk=1, limit=''):
     """Fetch location inventory counts recursively."""
     cache = page_info
-    #inv_levels.extend(shopify.Product.find(limit=limit, page_info=page_info))
+    # inv_levels.extend(shopify.Product.find(limit=limit, page_info=page_info))
     inv_levels.extend(oLocation.inventory_levels(
         limit=limit, page_info=page_info))
     cursor = shopify.ShopifyResource.connection.response.headers.get('Link')
@@ -59,7 +61,7 @@ def recursive_get_inventory_levels(oLocation, inv_levels, page_info='', chunk=1,
         for _ in cursor.split(','):
             if _.find('next') > 0:
                 page_info = _.split(';')[0].strip('<>').split('page_info=')[1]
-    #logging.info('chunk fetched: %s' % chunk)
+    # logging.info('chunk fetched: %s' % chunk)
     if cache != page_info:
         time.sleep(1)
         return recursive_get_inventory_levels(oLocation, inv_levels, page_info, chunk+1, limit)
@@ -99,9 +101,7 @@ class ShopifyProducts:
                     updateInventoryCount(
                         p, tempAvailabilityProductSKUList[p.variants[0].sku])
 
-#########################################
-#########################################
-#########################################
+
 
 
 class InventoryItemIdMap:
@@ -128,7 +128,7 @@ class InventoryItemIdMap:
     def resetInventoryItemMap(self):
         self.dTheMap = {
             "000_ProductSKU:product.variant[n].inventory_item_id": 1}
-        #prods = cursor_based_bulk_fetch_products()
+        # prods = cursor_based_bulk_fetch_products()
         sps = ShopifyProducts()
         prods = sps.dProducts
         for p in prods.values():
@@ -256,9 +256,9 @@ def updateAllInventoryCounts():
     logging.info(
         f"Total inventory updates:{totalUpdateCount} Total no changes:{totalNotUpdatedCount}")
 
-#oLocation = shopify.Location.find(locationid)
-#oLocation2 = shopify.Location({'id':locationid})
-#oLocation = shopify.Location(locationid)
+# oLocation = shopify.Location.find(locationid)
+# oLocation2 = shopify.Location({'id':locationid})
+# oLocation = shopify.Location(locationid)
 
 
 def updateInventoryProperties(shopify_variant):
@@ -290,7 +290,7 @@ def updateInventoryProperties(shopify_variant):
         shopify_variant.inventory_policy = "deny"
         # shopify_variant.save()
         # time.sleep(1)
-        #logging.info("10 sleep")
+        # logging.info("10 sleep")
     if bSave:
         time.sleep(.6)
         shopify_variant.save()
@@ -345,7 +345,7 @@ def updateInventoryNew(shopify_id, inventory_item_id, supplierInvCount):
     #
     #
     websitecount = getInventoryCountFromShopifyLocation(inventory_item_id)
-    #websitecount = oProduct.variants[0].inventory_quantity
+    # websitecount = oProduct.variants[0].inventory_quantity
     supplierInvCount = int(supplierInvCount)
     if websitecount == None:
         websitecount = 0
@@ -404,8 +404,8 @@ def updateInventoryCount(shopifyProduct, suppliercount):
     shopifyproductid = ""
     pNum = ""
     # TODO fix location ID
-    #shopify.InventoryLevel.set(locationid, shopify_id, 5)
-    #shopify.InventoryLevel.set(locationid, shopify_id, quantity)
+    # shopify.InventoryLevel.set(locationid, shopify_id, 5)
+    # shopify.InventoryLevel.set(locationid, shopify_id, quantity)
     pNum = shopifyProduct.variants[0].sku
     shopify_variant = shopifyProduct.variants[0]
     updateInventoryProperties(shopify_variant)
@@ -421,10 +421,10 @@ def updateInventoryCount(shopifyProduct, suppliercount):
             # TODO increase processing time by eliminating the call to InventoryLevel
             # TODO cache the shopify inventory level set to either True or False
             # TODO create a function to reset the inventory cache
-            #logging.info("--10.1 sleep-get live inventory level available")
+            # logging.info("--10.1 sleep-get live inventory level available")
             # time.sleep(.5)
             websitecount = shopifyProduct.variants[0].inventory_quantity
-            #websitecount = shopify.InventoryLevel.connect(locationid,iInventoryItemId).available
+            # websitecount = shopify.InventoryLevel.connect(locationid,iInventoryItemId).available
             # time.sleep(.5)
 
             if websitecount == None:
@@ -434,7 +434,7 @@ def updateInventoryCount(shopifyProduct, suppliercount):
             # if websitecount == 1:
             #    websitecount = 0
 
-            #coastercount = inventoryCount.getInventoryCount(pNum)
+            # coastercount = inventoryCount.getInventoryCount(pNum)
             # TODO only update the level if the coaster count is below 5 or the shopify count is below 5? think this through
             if websitecount > 5 and suppliercount > 5:
                 # we don't care about inventory changes when the inventory is sufficient
@@ -514,10 +514,10 @@ def getPrice(productnumber):
 
 def updateAllPrices():
     # default location id:36481335376
-    #API_VERSION = "2020-04"
-    #shop_url = "https://%s:%s@red-rock-luxury-furniture-2.myshopify.com/admin/api/%s" % (config.data["API_KEY"], config.data["PASSWORD"], API_VERSION)
+    # API_VERSION = "2020-04"
+    # shop_url = "https://%s:%s@red-rock-luxury-furniture-2.myshopify.com/admin/api/%s" % (config.data["API_KEY"], config.data["PASSWORD"], API_VERSION)
     # shopify.ShopifyResource.set_site(shop_url)
-    #shop = shopify.Shop.current()
+    # shop = shopify.Shop.current()
 
     # open each json file in the directory
     os.chdir("C:/Projects/CoasterAPI/coasterapi/cached_json")
@@ -527,7 +527,7 @@ def updateAllPrices():
         with open('C:/Projects/CoasterAPI/coasterapi/cached_json/'+file) as json_file:
             coasterobj = json.load(json_file)
             updatePrice(coasterobj)
-        #images = data[0]["ListNextGenImages"]
+        # images = data[0]["ListNextGenImages"]
 
 ############################################################
 ############################################################
@@ -568,7 +568,7 @@ def cursor_based_bulk_fetch_products(limit=250):
     if os.path.exists(thefulljsonpath) and usecache:
         logging.debug("Loading Shopify products from cache")
         f = open(thefulljsonpath)
-        import jsonpickle
+
         json_str = f.read()
         allShopifyProducts = jsonpickle.decode(json_str)
         # with open(thefulljsonpath) as outfile2:
@@ -577,7 +577,6 @@ def cursor_based_bulk_fetch_products(limit=250):
         logging.debug("Loading Shopify products from Shopify")
         allShopifyProducts = get_products(products, limit=limit)
         f = open(thefulljsonpath, 'w')
-        import jsonpickle
         json_obj = jsonpickle.encode(allShopifyProducts)
         f.write(json_obj)
         f.close()
@@ -594,13 +593,13 @@ def get_products(products, page_info='', chunk=1, limit=''):
         for _ in cursor.split(','):
             if _.find('next') > 0:
                 page_info = _.split(';')[0].strip('<>').split('page_info=')[1]
-    #logging.info('chunk fetched: %s' % chunk)
+    # logging.info('chunk fetched: %s' % chunk)
     if cache != page_info:
         time.sleep(1)
         return get_products(products, page_info, chunk+1, limit)
     return products
 
-#prods = cursor_based_bulk_fetch_products()
+# prods = cursor_based_bulk_fetch_products()
 
 # TODO delete all products that are zero inventory and are IsDiscontinued
 # Deletes a product by its Shopify product ID (not the vendor's SKU)
@@ -645,7 +644,7 @@ def upsertShopifyProduct(productJSON, bUpdateImages=False):
         # print(pNum)
         oProduct.SKU = pNum
 
-        #theprice = getPrice(pNum)
+        # theprice = getPrice(pNum)
         # Set the Price
         # attributes can     be set at creation
         variant = shopify.Variant(dict(price=productJSON["RRFO_PRICE"]))
@@ -668,7 +667,7 @@ def upsertShopifyProduct(productJSON, bUpdateImages=False):
             returnmeupdated = True
             # Don't set saveChanges because the updateInventory method handled the save
             # the save happens on the variant
-            #saveChanges = True
+            # saveChanges = True
 
     if ("%.2f" % float(oProduct.variants[0].price)) != ("%.2f" % float(productJSON["RRFO_PRICE"])):
         logging.info("    Price changed from:" +
@@ -716,8 +715,8 @@ def upsertShopifyProduct(productJSON, bUpdateImages=False):
         #        logging.info("skipped save of product:" + pNum)
         # else:
         #    logging.info("no changes to product")
-        #productJSON[0]["shopifyproductid"] = oProduct.id
-        #filename ='C:/Projects/CoasterAPI/coasterapi/cached_json/'+ pNum+ ".json"
+        # productJSON[0]["shopifyproductid"] = oProduct.id
+        # filename ='C:/Projects/CoasterAPI/coasterapi/cached_json/'+ pNum+ ".json"
         # with open(filename, "w") as outfile:
         #    json.dump(productJSON, outfile)
 
@@ -742,12 +741,12 @@ def upsertShopifyProduct(productJSON, bUpdateImages=False):
                         b_image_already_live = True
                         break
                 if not b_image_already_live:
-                    #print("add the image to shopify:"+img)
-                    #filecheck = os.path.join(currentDir,imgfilename)
+                    # print("add the image to shopify:"+img)
+                    # filecheck = os.path.join(currentDir,imgfilename)
                     # ImageDl(img,filecheck)
-                    #shopifyimage = shopify.Image({"product_id":oProduct.id})
+                    # shopifyimage = shopify.Image({"product_id":oProduct.id})
                     # Add images by URL
-                    #print("Adding image to Shopify: "+url)
+                    # print("Adding image to Shopify: "+url)
                     image = shopify.Image({"product_id": oProduct.id})
                     image.src = img_url
                     time.sleep(.5)
@@ -757,7 +756,7 @@ def upsertShopifyProduct(productJSON, bUpdateImages=False):
                     #    shopifyimage.save()
                     #    returnmeimages = True
                     #    time.sleep(4)
-                    #print("added image to shopify")
+                    # print("added image to shopify")
                     # os.remove(filecheck)
         return "New obj:"+str(returnmenew) + " Udated:"+str(returnmeupdated) + " Updated images:"+str(returnmeimages)
     except Exception as e:
@@ -780,7 +779,7 @@ def ImageDl(url, filepath):
                 with open(filepath, 'wb') as f:
                     r.raw.decode_content = True
                     shutil.copyfileobj(r.raw, f)
-                #print('Downloading image: {}'.format(filename))
+                # print('Downloading image: {}'.format(filename))
             break
         except Exception as e:
             attempts += 1
@@ -811,7 +810,7 @@ def addProduct(productJSON):
 
         # Add images by URL
         for url in productJSON["Images"]:
-            #print("Adding image to Shopify: "+url)
+            # print("Adding image to Shopify: "+url)
             image = shopify.Image({"product_id": oProduct.id})
             image.src = url
             image.save()
@@ -857,7 +856,7 @@ def updateInventory(shopify_id, quantity):
         # zzz
         sps = ShopifyProducts()
         prods = sps.dProducts
-        #oProduct = shopify.Product.find(shopify_id)
+        # oProduct = shopify.Product.find(shopify_id)
         for p in prods.values():
             if p.attributes["id"] == shopify_id:
                 oProduct = p
@@ -922,7 +921,7 @@ def products_update_all(request):
     jObj = api.call("GetCategoryList", {})
     for p in jObj:
         # get all the objects in a category
-        #thefilter = saveFilter("getFilter?categoryCode="+p["CategoryCode"])
+        # thefilter = saveFilter("getFilter?categoryCode="+p["CategoryCode"])
         # saveCoasterProduct(thefilter,"CompleteCategory-"+p["CategoryName"])
         args = {'CategoryCode': p["CategoryCode"]}
         data = api.call("GetFilter", args)

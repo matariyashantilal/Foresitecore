@@ -141,3 +141,5 @@ UttermostSampleSet/
 
 # VS Code files
 .vscode
+
+.DS_Store
