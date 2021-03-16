@@ -6,7 +6,7 @@ urlpatterns = [
     path('scrape/update-all', views.scrape_all_product, name="scrape-update-all"),
     path('scrape/<productID>', views.scrape, name="scrape"),
     path('getsupplierinventorycounts/',
-         views.get_supplier_inventory_counts, name="get-supplier-inventory-counts"),
+         views.get_supplier_inventory_counts, name="get-supplier-inventory-count"),
     path('getproductinventorycount/<pNum>',
          views.get_product_inventory_count, name="get-product-inventory-count"),
     path('updateinventory',
@@ -14,3 +14,4 @@ urlpatterns = [
     path('updateprice',
          views.update_prices, name="update-prices"),
 ]
+

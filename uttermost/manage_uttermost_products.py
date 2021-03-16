@@ -10,8 +10,7 @@ import requests
 from django.conf import settings
 from lxml import html
 
-from uttermost import (get_uttermost_image_urls,
-                                manage_uttermost_products)
+from uttermost import get_uttermost_image_urls, manage_uttermost_products
 from uttermost import views as shopify
 
 getuttermostimageurlsObj = get_uttermost_image_urls.GetUttermostImageUrls()
@@ -154,8 +153,7 @@ class ManageUttermostProducts:
         df = pd.read_excel(catalogfile)
         result = df.to_json(orient="records")
         rows = json.loads(result)
-        
-        
+
         for row in rows:
             body_html = ''.join((
                 row["Marketing Description"],
@@ -186,8 +184,8 @@ class ManageUttermostProducts:
             thejsonfilename = 'uttermost_images_scraped_data.json'
             thefulljsonpath = os.path.join(
                 settings.UTTERMOST_TEMP_DIR, thejsonfilename)
-          
-            print("thefulljsonpath",thefulljsonpath)
+
+            print("thefulljsonpath", thefulljsonpath)
             if os.path.exists(thefulljsonpath):
                 with open(thefulljsonpath) as f:
                     data = json.load(f)

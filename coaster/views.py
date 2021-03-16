@@ -114,5 +114,4 @@ def update_prices(request):
         logging.info("Cannot update price for "
                      ". Problem with product id find. Did the id change, or was the product on the website removed?")
         logging.info(e)
-        return HttpResponse("Cannot update price for "
-                            ". Problem with product id find. Did the id change, or was the product on the website removed?")
+        return HttpResponse("Cannot update price")

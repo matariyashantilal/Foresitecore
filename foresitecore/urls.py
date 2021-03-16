@@ -22,5 +22,5 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='home.html')),
     path('coaster/', include('coaster.urls')),
     path('shopify/', include('shopify_wrapper.urls')),
-    path('supplier-uttermost/', include('uttermost.urls')),
+    path('uttermost/', include('uttermost.urls')),
 ]

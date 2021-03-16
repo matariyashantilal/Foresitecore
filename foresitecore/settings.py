@@ -39,8 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # coaster app
     'coaster',
+    # shopify wrapper app
     'shopify_wrapper',
+    # uttermost app
     'uttermost',
 ]
 
@@ -73,10 +76,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'foresitecore.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 
 # Password validation
@@ -120,24 +119,28 @@ STATIC_URL = '/static/'
 # COASTER SETTINGS
 # COASTER DIRECTORY PATH
 COASTER_DIRECTORY_PATH = os.environ.get("COASTER_DIRECTORY_PATH")
+# SHOPIFY DIRECTORY PATH
 SHOPIFY_DIRECTORY_PATH = os.environ.get("SHOPIFY_DIRECTORY_PATH")
-UTTERMOST = os.environ.get("UTTERMOST")
+# UTTERMOST DIRECTORY PATH
+UTTERMOST_DIRECTORY_PATH = os.environ.get("UTTERMOST_DIRECTORY_PATH")
 
-
+# IF COASTER_DIRECTORY_PATH DOES NOT EXISTS SO PATH MAKE IT.
 if not os.path.exists(COASTER_DIRECTORY_PATH):
     os.makedirs(COASTER_DIRECTORY_PATH)
 
+# IF SHOPIFY_DIRECTORY_PATH DOES NOT EXISTS SO PATH MAKE IT.
 if not os.path.exists(SHOPIFY_DIRECTORY_PATH):
     os.makedirs(SHOPIFY_DIRECTORY_PATH)
 
-if not os.path.exists(UTTERMOST):
-    os.makedirs(UTTERMOST)
+# IF UTTERMOST_DIRECTORY_PATH DOES NOT EXISTS SO PATH MAKE IT.
+if not os.path.exists(UTTERMOST_DIRECTORY_PATH):
+    os.makedirs(UTTERMOST_DIRECTORY_PATH)
 
 
 # The search url for coaster.
 COASTER_SEARCH_URL = 'https://www.coasterfurniture.com/?s={}'
 
-
+# CACHE_BACKUP_DIR
 CACHE_BACKUP_DIR = os.path.join(os.path.abspath(os.getcwd()), 'cachebackup')
 
 # UTTERMOST SETTINGS
@@ -149,9 +152,4 @@ UTTERMOST_BASE_URL = 'https://www.uttermost.com'
 UTTERMOST_SEARCH_URL = UTTERMOST_BASE_URL + '/search/?q={}'
 
 # The base path for the uttermost where we store scraped data of products of Uttermost.
-UTTERMOST_TEMP_DIR = os.path.join(UTTERMOST)
-
-
-# Check if the temporary dir path for uttermost is exists. If not then create it.
-if not os.path.exists(UTTERMOST_TEMP_DIR):
-    os.makedirs(UTTERMOST_TEMP_DIR)
+UTTERMOST_TEMP_DIR = os.path.join(UTTERMOST_DIRECTORY_PATH)

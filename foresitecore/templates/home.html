@@ -30,7 +30,7 @@
     <h3>Inventory</h3>
     <ul>
         <li>
-            <a href="{% url 'get-supplier-inventory-counts'  %}">Get Coaster
+            <a href="{% url 'get-supplier-inventory-count'  %}">Get Coaster
                 inventory counts</a>
         </li>
         <li>
@@ -74,14 +74,8 @@
             <li>
                 <a href="{% url 'add-product-coaster' sku_list='jjjj' %}">local Rizzy add 801038</a>
             </li>
-            {% comment %} <li>
-                <a href="{% url 'add-product-foa' sku_list="CM7295Q-BED"  %}">local foa add 801038</a>
-            </li> {% endcomment %}
-            {% comment %} <li>
-                <a href="{% url 'add-product-uttermost' sku_list="CM7295Q-BED"    %}">local uttermost add 19850</a>
-            </li> {% endcomment %}
             <li>
-                <a href="{% url 'resetshopifyproducts' %}">Reset Shopify products cache</a>
+                <a href="{% url 'reset-shopify-products' %}">Reset Shopify products cache</a>
             </li>
         </ul>
         <h3>Scarpe Uttermost</h3>

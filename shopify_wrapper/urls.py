@@ -8,6 +8,6 @@ urlpatterns = [
     path('products-update-all/update-all',
          views.products_update_all, name="products-update-all"),
     path('resetshopifyproducts/',
-         views.reset_shopify_cache, name="resetshopifyproducts"),
+         views.reset_shopify_cache, name="reset-shopify-products"),
 
 ]

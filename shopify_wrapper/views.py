@@ -102,8 +102,6 @@ class ShopifyProducts:
                         p, tempAvailabilityProductSKUList[p.variants[0].sku])
 
 
-
-
 class InventoryItemIdMap:
     dTheMap = {"000_ProductSKU:product.variant[n].inventory_item_id": 1}
     sfileName = "MapInventoryItemId.json"
@@ -137,12 +135,6 @@ class InventoryItemIdMap:
             livesku = p.variants[0].sku
             iii = p.variants[0].inventory_item_id
             self.updateInventoryItemIdMap(livesku, iii)
-
-#########################################
-#########################################
-#########################################
-
-# Shopify id lookup by Coaster SKU
 
 
 class ProductMapping:
@@ -181,9 +173,6 @@ class ProductMapping:
             thid = p.id
             self.updateCoasterMap(livesku, thid)
 
-#########################################
-#########################################
-#########################################
 
 # def upsertLiveShopifyProduct(objShopifyProduct):
 #
@@ -230,11 +219,6 @@ class ProductMapping:
 #        return
 
 
-############################################################
-##
-# Inventory
-##
-############################################################
 def getInventoryCountFromShopifyLocation(inventory_item_id):
     available = 0
     for item in inventorycounts:
@@ -255,10 +239,6 @@ def updateAllInventoryCounts():
             totalNotUpdatedCount = totalNotUpdatedCount + 1
     logging.info(
         f"Total inventory updates:{totalUpdateCount} Total no changes:{totalNotUpdatedCount}")
-
-# oLocation = shopify.Location.find(locationid)
-# oLocation2 = shopify.Location({'id':locationid})
-# oLocation = shopify.Location(locationid)
 
 
 def updateInventoryProperties(shopify_variant):
@@ -340,10 +320,6 @@ def updateInventoryNew(shopify_id, inventory_item_id, supplierInvCount):
         shopify_variant.save()
 
     bSave = True
-    #######################################
-    # Code for inventory count manipulation
-    #
-    #
     websitecount = getInventoryCountFromShopifyLocation(inventory_item_id)
     # websitecount = oProduct.variants[0].inventory_quantity
     supplierInvCount = int(supplierInvCount)
@@ -381,17 +357,12 @@ def updateInventoryNew(shopify_id, inventory_item_id, supplierInvCount):
                          " to " + str(supplierInvCount) + " for:"+pNum)
             bSave = True
 
-    ##
-    ##########################
-
     if bSave:
         returnme = True
         time.sleep(.6)
         shopify_variant.save()
 
     return returnme
-
-# only update the inventory count
 
 
 def updateInventoryCount(shopifyProduct, suppliercount):
@@ -484,12 +455,6 @@ def updateInventoryCount(shopifyProduct, suppliercount):
                      " Problem with product sku. there is no Sku for this product ")
     return updated
 
-############################################################
-##
-# Prices
-##
-############################################################
-
 
 def getPrice(productnumber):
     # open the price file
@@ -529,9 +494,7 @@ def updateAllPrices():
             updatePrice(coasterobj)
         # images = data[0]["ListNextGenImages"]
 
-############################################################
-############################################################
-############################################################
+
 # https://stackoverflow.com/questions/43575659/how-to-get-all-product-id-from-shopify-python-api
 # https://www.shopify.com/partners/blog/relative-pagination
 # https://github.com/Shopify/shopify_api/pull/594/files
@@ -603,9 +566,7 @@ def get_products(products, page_info='', chunk=1, limit=''):
 
 # TODO delete all products that are zero inventory and are IsDiscontinued
 # Deletes a product by its Shopify product ID (not the vendor's SKU)
-############################################################
-############################################################
-############################################################
+
 
 # get the supplemental images and information from the screen scrape data
 
@@ -940,10 +901,6 @@ def add_product(request, sku_list):
         result = ""
         sku_list = sku_list.split(",")
         result = productObj.addList(sku_list)
-
-        # elif (vendor == "foa"):
-        #     result = FOA.add(sku_list)
-
         if result == None:
             result = "Update return string for this vendor!!"
         return HttpResponse(result)
