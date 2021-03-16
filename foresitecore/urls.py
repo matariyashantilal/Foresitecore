@@ -23,5 +23,4 @@ urlpatterns = [
     path('coaster/', include('coaster.urls')),
     path('shopify/', include('shopify_wrapper.urls')),
     path('supplier-uttermost/', include('uttermost.urls')),
-    path('foa/', include('foa.urls')),
 ]

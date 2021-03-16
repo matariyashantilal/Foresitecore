@@ -38,16 +38,16 @@
                 inventory count
                 for pNum 801038</a>
         </li>
-        <li>
+        {% comment %} <li>
             <a href="{% url 'update-inventory-foa'   %}">localhost Update FOA Inventory</a>
-        </li>
+        </li> {% endcomment %}
         <li>
             <a href="{% url 'update-inventory-coaster'   %}">localhost Update Coaster Inventory</a>
         </li>
-        <li>
+        {% comment %} <li>
             <a href="https://redrockfurniture.azurewebsites.net/updateinventory/foa">Update prod FOA
                 Inventory</a>
-        </li>
+        </li> {% endcomment %}
     </ul>
 
 
@@ -74,12 +74,12 @@
             <li>
                 <a href="{% url 'add-product-coaster' sku_list='jjjj' %}">local Rizzy add 801038</a>
             </li>
-            <li>
+            {% comment %} <li>
                 <a href="{% url 'add-product-foa' sku_list="CM7295Q-BED"  %}">local foa add 801038</a>
-            </li>
-            <li>
+            </li> {% endcomment %}
+            {% comment %} <li>
                 <a href="{% url 'add-product-uttermost' sku_list="CM7295Q-BED"    %}">local uttermost add 19850</a>
-            </li>
+            </li> {% endcomment %}
             <li>
                 <a href="{% url 'resetshopifyproducts' %}">Reset Shopify products cache</a>
             </li>

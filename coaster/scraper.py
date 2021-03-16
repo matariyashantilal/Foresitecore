@@ -49,6 +49,7 @@ class Scraper:
         thejsonfilename = "coaster_scrape_" + pNum + ".json"
         thefulljsonpath = os.path.join(
             settings.COASTER_DIRECTORY_PATH, thejsonfilename)
+
         try:
             self.count_total += 1
 

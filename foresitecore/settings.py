@@ -42,8 +42,6 @@ INSTALLED_APPS = [
     'coaster',
     'shopify_wrapper',
     'uttermost',
-    'foa',
-    
 ]
 
 MIDDLEWARE = [
@@ -123,15 +121,22 @@ STATIC_URL = '/static/'
 # COASTER DIRECTORY PATH
 COASTER_DIRECTORY_PATH = os.environ.get("COASTER_DIRECTORY_PATH")
 SHOPIFY_DIRECTORY_PATH = os.environ.get("SHOPIFY_DIRECTORY_PATH")
-uttermost =  os.environ.get("uttermost")
+UTTERMOST = os.environ.get("UTTERMOST")
+
+
+if not os.path.exists(COASTER_DIRECTORY_PATH):
+    os.makedirs(COASTER_DIRECTORY_PATH)
+
+if not os.path.exists(SHOPIFY_DIRECTORY_PATH):
+    os.makedirs(SHOPIFY_DIRECTORY_PATH)
+
+if not os.path.exists(UTTERMOST):
+    os.makedirs(UTTERMOST)
 
 
 # The search url for coaster.
 COASTER_SEARCH_URL = 'https://www.coasterfurniture.com/?s={}'
 
-
-if not os.path.exists(COASTER_DIRECTORY_PATH):
-    os.makedirs(COASTER_DIRECTORY_PATH)
 
 CACHE_BACKUP_DIR = os.path.join(os.path.abspath(os.getcwd()), 'cachebackup')
 
@@ -144,7 +149,8 @@ UTTERMOST_BASE_URL = 'https://www.uttermost.com'
 UTTERMOST_SEARCH_URL = UTTERMOST_BASE_URL + '/search/?q={}'
 
 # The base path for the uttermost where we store scraped data of products of Uttermost.
-UTTERMOST_TEMP_DIR = os.path.join(uttermost)
+UTTERMOST_TEMP_DIR = os.path.join(UTTERMOST)
+
 
 # Check if the temporary dir path for uttermost is exists. If not then create it.
 if not os.path.exists(UTTERMOST_TEMP_DIR):
