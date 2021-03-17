@@ -55,11 +55,8 @@ class removeproducts:
 
         '''Get Shopify SKU for Items in duplicate list'''
         for item in list_of_doubles:
-            #print(item, oProduct[item])
             temp = str(oProduct[item])
-            print(temp)
             product_ID = int(temp[8:-1])
             shopify.Product.delete(product_ID)
-            print(f"DELETED {product_ID}")
 
     get_item_numbers('DISCONTINUED_PRODUCTS')

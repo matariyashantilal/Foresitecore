@@ -543,7 +543,6 @@ def cursor_based_bulk_fetch_products(limit=250):
         json_obj = jsonpickle.encode(allShopifyProducts)
         f.write(json_obj)
         f.close()
-
     return allShopifyProducts
 
 
@@ -637,6 +636,7 @@ def upsertShopifyProduct(productJSON, bUpdateImages=False):
         saveChanges = True
 
     # Check for tag changes
+
     if not myArrayCompare(oProduct.tags, productJSON["Tags"]):
         oProduct.tags = productJSON["Tags"]
         saveChanges = True

@@ -11,7 +11,7 @@ from django.conf import settings
 from lxml import html
 
 from uttermost import get_uttermost_image_urls, manage_uttermost_products
-from uttermost import views as shopify
+from shopify_wrapper import views as shopify
 
 getuttermostimageurlsObj = get_uttermost_image_urls.GetUttermostImageUrls()
 
@@ -35,7 +35,7 @@ class ManageUttermostProducts:
         if fileExtension == "xls" or fileExtension == "xlsx" or fileExtension == "XLS" or fileExtension == "XLSX":
             attachment_dir = tempfile.gettempdir()
             filePath = os.path.join(attachment_dir, fileName)
-            excel2json.convert_from_file(filePath)
+
             if os.path.exists(attachment_dir+"/Uttermost Item Availability.json"):
                 os.remove(filePath)
                 # logger.info("Get shopify products")
@@ -59,6 +59,7 @@ class ManageUttermostProducts:
                                   tempAvailabilityProductSKUList)
                 # logger.info("Products has been updated successfully on shopify.")
             else:
+                print("bar dekho")
                 os.remove(filePath)
                 # logger.info("Json has not created.")
 
@@ -185,7 +186,6 @@ class ManageUttermostProducts:
             thefulljsonpath = os.path.join(
                 settings.UTTERMOST_TEMP_DIR, thejsonfilename)
 
-            print("thefulljsonpath", thefulljsonpath)
             if os.path.exists(thefulljsonpath):
                 with open(thefulljsonpath) as f:
                     data = json.load(f)

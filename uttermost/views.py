@@ -2,8 +2,8 @@ import os
 
 from django.http import HttpResponse
 
-from uttermost import (import_email_from_gmail, get_uttermost_image_urls,
-                       gmail_lib, manage_uttermost_products)
+from uttermost import (get_uttermost_image_urls, gmail_lib,
+                       import_email_from_gmail, manage_uttermost_products)
 
 getuttermostimageurlsObj = get_uttermost_image_urls.GetUttermostImageUrls()
 manageuttermostproductsObj = manage_uttermost_products.ManageUttermostProducts()
@@ -20,7 +20,7 @@ def update_inventory(request):
     EmailClass = gmail_lib.Gmail()
 
     thedownloadedfilename = EmailClass.DownloadAttachement(email_subject)
-    print(thedownloadedfilename)
+    
     if thedownloadedfilename:
         SupplierClass = manageuttermostproductsObj
         SupplierClass.updateInventoryCounts(thedownloadedfilename)

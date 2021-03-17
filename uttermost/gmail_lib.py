@@ -26,7 +26,6 @@ class Gmail:
         self.username = os.environ.get("gmailUsername")
         self.password = os.environ.get("gmailPassword")
         self.temp_directory_path = tempfile.gettempdir()
-        print(self.temp_directory_path)
         #self.email_subject = os.environ.get("email_subject")
 
     def DownloadAttachement(self, email_subject):
@@ -73,7 +72,6 @@ class Gmail:
                                 # check valid excel file
                                 fileExtension = fileName.split(".")[1]
                                 if fileExtension == "xls" or fileExtension == "xlsx" or fileExtension == "XLS" or fileExtension == "XLSX":
-                                    print("GOT TO THIS POINT")
                                     return fileName
 
                                 else:

@@ -84,7 +84,7 @@ def update_inventory(request):
     sps = shopify.ShopifyProducts()
     for p in sps.dProducts.values():
         if p.attributes["vendor"] == "Coaster":
-            # get the suppliers inventory count for this product
+            # get the suppliers inventory count for this product.
             sSupplierSKU = p.attributes["variants"][0].sku
             inventorycount = inventoryCount.getInventoryCount(sSupplierSKU)
             inventory_item_id = p.attributes["variants"][0].attributes["inventory_item_id"]
