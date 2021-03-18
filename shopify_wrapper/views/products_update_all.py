@@ -14,9 +14,6 @@ def products_update_all(request):
     # get the category json
     jObj = api.call("GetCategoryList", {})
     for p in jObj:
-        # get all the objects in a category
-        # thefilter = saveFilter("getFilter?categoryCode="+p["CategoryCode"])
-        # saveCoasterProduct(thefilter,"CompleteCategory-"+p["CategoryName"])
         args = {'CategoryCode': p["CategoryCode"]}
         data = api.call("GetFilter", args)
         filter = json.dumps(data).strip('"')

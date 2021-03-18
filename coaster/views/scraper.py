@@ -6,8 +6,6 @@ import requests
 from django.conf import settings
 from lxml import html
 
-# from settings import COASTER_SEARCH_URL, COASTER_TEMP_DIR, TEMP_DIR
-
 
 class Scraper:
     """Scarper class which defines all the utility methods which helps us to scrape the data from the Coaster.

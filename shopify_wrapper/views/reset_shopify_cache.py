@@ -2,17 +2,10 @@ import glob
 import json
 import logging
 import os
-import shutil
-import time
 from pathlib import Path
 
 from django.http import HttpResponse
-from . import product
-
 from . import shopify_products
-
-productObj = product.products()
-
 
 thebaseshopifylogpath = os.environ.get("SHOPIFY_DIRECTORY_PATH")
 

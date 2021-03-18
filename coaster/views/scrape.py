@@ -1,12 +1,5 @@
-import logging
-import os
-
-from coaster.views import api, inventory_count, scraper
-from django.conf import settings
+from coaster.views import scraper
 from django.http import HttpResponse
-from shopify_wrapper import views as shopify
-from shopify_wrapper.views import productObj
-
 
 # scraper class object
 scrapeObj = scraper.Scraper()

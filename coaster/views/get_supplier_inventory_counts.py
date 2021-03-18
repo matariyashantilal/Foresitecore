@@ -1,14 +1,9 @@
 import json
 import os
 
-from coaster.views import api, inventory_count, scraper
+from coaster.views import api
 from django.conf import settings
 from django.http import HttpResponse
-from shopify_wrapper import views as shopify
-from shopify_wrapper.views import productObj
-
-# scraper class object
-scrapeObj = scraper.Scraper()
 
 
 def get_supplier_inventory_counts(request, refreshcache=False):

@@ -1,6 +1,7 @@
 import os
 
 from django.http import HttpResponse
+
 from . import manage_uttermost_products
 
 manageuttermostproductsObj = manage_uttermost_products.ManageUttermostProducts()
