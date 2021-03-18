@@ -2,8 +2,8 @@ import json
 import os
 
 import shopify
-import shopify_helper_new
 import xlrd
+from shopify_wrapper import views as shopify_helper_new
 
 
 class removeproducts:
@@ -59,4 +59,8 @@ class removeproducts:
             product_ID = int(temp[8:-1])
             shopify.Product.delete(product_ID)
 
-    get_item_numbers('DISCONTINUED_PRODUCTS')
+
+# file remaining
+ 
+# removeproduct=removeproducts()
+# removeproduct.get_item_numbers('DISCONTINUED_PRODUCTS')

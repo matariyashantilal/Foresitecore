@@ -2,7 +2,7 @@ import json
 import logging
 import os
 
-from coaster import api, inventory_count, scraper
+from coaster.views import api, inventory_count, scraper
 from django.conf import settings
 from django.http import HttpResponse
 

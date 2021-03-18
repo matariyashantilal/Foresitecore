@@ -10,7 +10,7 @@ import requests
 from django.conf import settings
 from lxml import html
 
-from uttermost import get_uttermost_image_urls, manage_uttermost_products
+from . import get_uttermost_image_urls, manage_uttermost_products
 from shopify_wrapper import views as shopify
 
 getuttermostimageurlsObj = get_uttermost_image_urls.GetUttermostImageUrls()
