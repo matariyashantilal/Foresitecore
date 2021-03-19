@@ -194,8 +194,8 @@ class ManageUttermostProducts:
                     for product in products:
                         if product["productID"] == str(row["Item Number"]):
                             break
-                        counter += 1
-                    if counter != len(products) - 1:
+                        counter += 1                     
+                    if counter != len(products):
                         newJsonObj['Images'] = products[counter]['images']
                     else:
                         self.scrape_images_for_product(
